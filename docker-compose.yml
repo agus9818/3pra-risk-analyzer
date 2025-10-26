@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: 3pra_db
+    restart: always
+    environment:
+      POSTGRES_USER: user_3pra
+      POSTGRES_PASSWORD: secure_password_3pra
+      POSTGRES_DB: risk_analyzer_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  # Servicio de Backend
+  api_ingestion:
+    build: ./api_ingestion
+    container_name: 3pra_api
+    restart: on-failure
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL= postgresql://user_3pra:secure_password_3pra@db:5432/risk_analyzer_db
+
+volumes:
+  postgres_data:
