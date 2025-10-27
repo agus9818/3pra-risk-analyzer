@@ -24,7 +24,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL= postgresql://user_3pra:secure_password_3pra@db:5432/risk_analyzer_db
+      DATABASE_URL: postgresql://user_3pra:secure_password_3pra@db:5432/risk_analyzer_db
 
 volumes:
   postgres_data:
