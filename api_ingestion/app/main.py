@@ -1,5 +1,5 @@
 from .database import engine, Base
-import models # Importa los modelos correspondientes
+from . import models # Importa los modelos correspondientes
 
 Base.metadata.create_all(bind=engine)
 
