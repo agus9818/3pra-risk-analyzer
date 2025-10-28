@@ -1,6 +1,10 @@
-from .database import engine, Base
-from . import models # Importa los modelos correspondientes
-
+from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.orm import Session
+from .database import engine, Base, get_db
+from . import models                             # <-- CORRECCIÓN 1: Importación relativa para models
+from .models import VulnerabilityCreate          # <-- CORRECCIÓN 2: Asegurar la importación relativa para el Schema
+from .utils import calcular_prioridad_ticket
+import uvicorn
 Base.metadata.create_all(bind=engine)
 
 
@@ -27,7 +31,7 @@ def create_vulnerability(finding: VulnerabilityCreate, db: Session = Depends(get
         url=finding.url,
 
         # Campos calculados por el sistema
-        criticidad_activo=criticidad_activo,
+        criticidad_activo=criticidad,
         prioridad_ticket=prioridad,
         corregido=False
     )
